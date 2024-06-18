@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import hako.rentACar.business.abstracts.ModelService;
+import hako.rentACar.core.utilities.results.DataResult;
+import hako.rentACar.core.utilities.results.Result;
+import hako.rentACar.core.utilities.results.SuccessDataResult;
+import hako.rentACar.core.utilities.results.SuccessResult;
 import hako.rentACar.dto.model.requests.CreateModelRequest;
 import hako.rentACar.dto.model.responses.GetAllModelsResponse;
 import jakarta.validation.Valid;
@@ -27,14 +31,16 @@ public class ModelsController {
   }
 
   @GetMapping()
-  public List<GetAllModelsResponse> getAll() {
-    return this.modelService.getAll();
+  public DataResult<List<GetAllModelsResponse>> getAll() {
+    List<GetAllModelsResponse> data = this.modelService.getAll();
+    return new SuccessDataResult<>("Models get okey", data);
   }
 
   @PostMapping()
   @ResponseStatus(code = HttpStatus.CREATED)
-  public void add(@RequestBody @Valid CreateModelRequest createModelRequest) {
+  public Result add(@RequestBody @Valid CreateModelRequest createModelRequest) {
     this.modelService.add(createModelRequest);
+    return new SuccessResult("Model added");
   }
   
 }

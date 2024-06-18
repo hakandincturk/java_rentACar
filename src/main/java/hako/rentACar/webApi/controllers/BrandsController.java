@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import hako.rentACar.business.abstracts.BrandService;
+import hako.rentACar.core.utilities.results.DataResult;
+import hako.rentACar.core.utilities.results.Result;
+import hako.rentACar.core.utilities.results.SuccessDataResult;
+import hako.rentACar.core.utilities.results.SuccessResult;
 import hako.rentACar.dto.brand.requests.CreateBrandRequest;
 import hako.rentACar.dto.brand.requests.UpdateBrandRequest;
 import hako.rentACar.dto.brand.responses.GetAllBrandsResponse;
@@ -34,30 +38,35 @@ public class BrandsController {
   }
 
   @GetMapping() // get request
-  public List<GetAllBrandsResponse> getAll() {
-    return this.brandService.getAll();
+  public DataResult<List<GetAllBrandsResponse>> getAll() {
+    List<GetAllBrandsResponse> data = this.brandService.getAll();
+    SuccessDataResult<List<GetAllBrandsResponse>> result = new SuccessDataResult<>("Brands get okey", data);
+    return result;
   }
 
   @GetMapping("/{id}")
-  public GetByIdBrandResponse getMethodName(@RequestParam int id) {
-      return this.brandService.getByIdBrand(id);
+  public DataResult<GetByIdBrandResponse> getMethodName(@RequestParam int id) {
+    GetByIdBrandResponse data = this.brandService.getByIdBrand(id);
+    SuccessDataResult<GetByIdBrandResponse> result = new SuccessDataResult<>("Brand get okey", data);
+    return result;
   }
 
   @PostMapping()
   @ResponseStatus(code = HttpStatus.CREATED)
-  public void add(@RequestBody @Valid CreateBrandRequest request) {
+  public Result add(@RequestBody @Valid CreateBrandRequest request) {
     this.brandService.add(request);
+    return new SuccessResult("Brand added");
   }
 
   @PutMapping()
-  public Boolean update(@RequestBody UpdateBrandRequest request) {
+  public Result update(@RequestBody UpdateBrandRequest request) {
     this.brandService.update(request);
-    return true;
+    return new SuccessResult("Brand updated");
   }
 
   @DeleteMapping("/{id}")
-  public Boolean delete(@PathVariable int id) {
+  public Result delete(@PathVariable int id) {
     this.brandService.delete(id);
-    return true;
+    return new SuccessResult("Brand deleted");
   }
 }

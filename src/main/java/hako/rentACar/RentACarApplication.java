@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import hako.rentACar.core.utilities.exceptions.BusinessException;
 import hako.rentACar.core.utilities.exceptions.ProblemDetails;
 import hako.rentACar.core.utilities.exceptions.ValidationProblemDetails;
+import hako.rentACar.core.utilities.results.DataResult;
+import hako.rentACar.core.utilities.results.ErrorDataResult;
 
 @SpringBootApplication
 @RestControllerAdvice
@@ -26,17 +28,18 @@ public class RentACarApplication {
 		SpringApplication.run(RentACarApplication.class, args);
 	}
 
+	// Execption handle ederken problem detail sinifi kullanilmali mi veya nasil kullanilmali
 	@ExceptionHandler
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST)
-	public ProblemDetails handleBusinessException(BusinessException businessException) {
+	public DataResult<ProblemDetails> handleBusinessException(BusinessException businessException) {
 		ProblemDetails problemDetails = new ProblemDetails();
 		problemDetails.setMessage(businessException.getMessage());
-		return problemDetails;
+		return new ErrorDataResult<ProblemDetails>(businessException.getMessage(), problemDetails);
 	}
 
 	@ExceptionHandler
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST)
-	public ProblemDetails handleValidationException(MethodArgumentNotValidException methodArgumentNotValidException) {
+	public DataResult<ProblemDetails> handleValidationException(MethodArgumentNotValidException methodArgumentNotValidException) {
 		ValidationProblemDetails problemDetails = new ValidationProblemDetails();
 		problemDetails.setMessage("VALIDATION.EXCEPTION");
 		problemDetails.setValidationErrors(new HashMap<String, String>());
@@ -45,7 +48,7 @@ public class RentACarApplication {
 			problemDetails.getValidationErrors().put(fieldError.getField(), fieldError.getDefaultMessage());
 		}
 
-		return problemDetails;
+		return new ErrorDataResult<ProblemDetails>("VALIDATION.EXCEPTION", problemDetails);
 	}
 
 	@Bean
