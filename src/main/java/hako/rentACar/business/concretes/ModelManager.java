@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import hako.rentACar.business.abstracts.ModelService;
 import hako.rentACar.core.utilities.mappers.ModelMapperService;
 import hako.rentACar.dataAccess.abstracts.ModelRepository;
+import hako.rentACar.dto.model.requests.CreateModelRequest;
 import hako.rentACar.dto.model.responses.GetAllModelsResponse;
 import hako.rentACar.entities.concretes.Model;
 
@@ -29,6 +30,12 @@ public class ModelManager implements ModelService {
     ).collect(Collectors.toList());
 
     return modelsResponse;
+  }
+
+  @Override
+  public void add(CreateModelRequest request) {
+    Model model = this.modelMapper.forRequest().map(request, Model.class);
+    this.modelRepository.save(model);
   }
   
 }

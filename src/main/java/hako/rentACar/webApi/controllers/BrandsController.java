@@ -17,6 +17,7 @@ import hako.rentACar.dto.brand.requests.CreateBrandRequest;
 import hako.rentACar.dto.brand.requests.UpdateBrandRequest;
 import hako.rentACar.dto.brand.responses.GetAllBrandsResponse;
 import hako.rentACar.dto.brand.responses.GetByIdBrandResponse;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,7 +45,7 @@ public class BrandsController {
 
   @PostMapping()
   @ResponseStatus(code = HttpStatus.CREATED)
-  public void add(@RequestBody CreateBrandRequest request) {
+  public void add(@RequestBody @Valid CreateBrandRequest request) {
     this.brandService.add(request);
   }
 

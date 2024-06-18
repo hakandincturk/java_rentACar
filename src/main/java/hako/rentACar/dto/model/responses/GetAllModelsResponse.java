@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class GetAllModelsResponse {
   private int id;
   private String name;
-  private int brandName;
+  private String brandName;
 }

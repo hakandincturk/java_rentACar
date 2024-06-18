@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import hako.rentACar.business.abstracts.BrandService;
+import hako.rentACar.business.rules.BrandBusinessRules;
 import hako.rentACar.core.utilities.mappers.ModelMapperService;
 import hako.rentACar.dataAccess.abstracts.BrandRepository;
 import hako.rentACar.dto.brand.requests.CreateBrandRequest;
@@ -18,10 +19,12 @@ import hako.rentACar.entities.concretes.Brand;
 public class BrandManager implements BrandService {
   private BrandRepository brandRepository;
   private ModelMapperService modelMapperService;
+  private BrandBusinessRules brandBusinessRules;
 
-  public BrandManager(BrandRepository brandRepository, ModelMapperService modelMapperService) {
+  public BrandManager(BrandRepository brandRepository, ModelMapperService modelMapperService,BrandBusinessRules brandBusinessRules) {
     this.brandRepository = brandRepository;
     this.modelMapperService = modelMapperService;
+    this.brandBusinessRules = brandBusinessRules;
   }
 
   @Override
@@ -36,8 +39,10 @@ public class BrandManager implements BrandService {
   }
 
   @Override
-  public void add(CreateBrandRequest request) {
-    Brand brand = this.modelMapperService.forRequest().map(request, Brand.class);
+  public void add(CreateBrandRequest createBrandRequest) {
+    this.brandBusinessRules.checkIfBrandNameExists(createBrandRequest.getName());
+
+    Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
     brandRepository.save(brand);
   }
 
