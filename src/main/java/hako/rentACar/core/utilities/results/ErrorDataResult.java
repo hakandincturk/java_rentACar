@@ -1,6 +1,10 @@
 package hako.rentACar.core.utilities.results;
 
 public class ErrorDataResult<T> extends DataResult<T> {
+  public ErrorDataResult(String message) {
+    super(false, message);
+  }
+
   public ErrorDataResult(T data) {
     super(false, data);
   }

@@ -2,7 +2,7 @@ package hako.rentACar.business.rules;
 
 import org.springframework.stereotype.Service;
 
-import hako.rentACar.core.utilities.exceptions.BusinessException;
+import hako.rentACar.core.utilities.results.exceptions.BusinessException;
 import hako.rentACar.dataAccess.abstracts.BrandRepository;
 
 @Service

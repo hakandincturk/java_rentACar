@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import hako.rentACar.core.utilities.exceptions.BusinessException;
-import hako.rentACar.core.utilities.exceptions.ProblemDetails;
-import hako.rentACar.core.utilities.exceptions.ValidationProblemDetails;
-import hako.rentACar.core.utilities.results.DataResult;
 import hako.rentACar.core.utilities.results.ErrorDataResult;
+import hako.rentACar.core.utilities.results.exceptions.BusinessException;
+import hako.rentACar.core.utilities.results.exceptions.ValidationProblemDetails;
 
 @SpringBootApplication
 @RestControllerAdvice
@@ -31,24 +29,22 @@ public class RentACarApplication {
 	// Execption handle ederken problem detail sinifi kullanilmali mi veya nasil kullanilmali
 	@ExceptionHandler
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST)
-	public DataResult<ProblemDetails> handleBusinessException(BusinessException businessException) {
-		ProblemDetails problemDetails = new ProblemDetails();
-		problemDetails.setMessage(businessException.getMessage());
-		return new ErrorDataResult<ProblemDetails>(businessException.getMessage(), problemDetails);
+	public ErrorDataResult<BusinessException> handleBusinessException(BusinessException businessException) {
+		System.out.println(businessException.getMessage());
+		BusinessException businessEx = new BusinessException(businessException.getMessage());
+		return new ErrorDataResult<BusinessException>(businessEx.getMessage());
 	}
 
 	@ExceptionHandler
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST)
-	public DataResult<ProblemDetails> handleValidationException(MethodArgumentNotValidException methodArgumentNotValidException) {
-		ValidationProblemDetails problemDetails = new ValidationProblemDetails();
-		problemDetails.setMessage("VALIDATION.EXCEPTION");
-		problemDetails.setValidationErrors(new HashMap<String, String>());
+	public ErrorDataResult<ValidationProblemDetails> handleValidationException(MethodArgumentNotValidException methodArgumentNotValidException) {
+		ValidationProblemDetails problemDetails = new ValidationProblemDetails(new HashMap<String, String>());
 
 		for (FieldError fieldError : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
 			problemDetails.getValidationErrors().put(fieldError.getField(), fieldError.getDefaultMessage());
 		}
 
-		return new ErrorDataResult<ProblemDetails>("VALIDATION.EXCEPTION", problemDetails);
+		return new ErrorDataResult<ValidationProblemDetails>("VALIDATION.EXCEPTION", problemDetails);
 	}
 
 	@Bean

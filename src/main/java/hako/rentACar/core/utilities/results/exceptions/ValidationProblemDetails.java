@@ -1,15 +1,15 @@
-package hako.rentACar.core.utilities.exceptions;
+package hako.rentACar.core.utilities.results.exceptions;
 
 import java.util.Map;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ValidationProblemDetails extends ProblemDetails {
+public class ValidationProblemDetails {
   private Map<String, String> validationErrors;
-  
+
 }

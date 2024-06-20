@@ -1,4 +1,4 @@
-package hako.rentACar.core.utilities.exceptions;
+package hako.rentACar.core.utilities.results.exceptions;
 
 public class BusinessException extends RuntimeException {
   public BusinessException(String message) {
