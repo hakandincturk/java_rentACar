@@ -3,6 +3,7 @@ package hako.rentACar.webApi.controllers;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +14,7 @@ import hako.rentACar.core.utilities.results.SuccessDataResult;
 import hako.rentACar.core.utilities.results.SuccessResult;
 import hako.rentACar.dto.model.requests.CreateModelRequest;
 import hako.rentACar.dto.model.responses.GetAllModelsResponse;
+import hako.rentACar.dto.model.responses.GetModelResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -30,10 +32,16 @@ public class ModelsController {
     this.modelService = modelService;
   }
 
+  @GetMapping("/{id}")
+  public DataResult<GetModelResponse> getOne(@RequestParam int modelId) {
+    GetModelResponse data = this.modelService.getOne(modelId);
+    return new SuccessDataResult<GetModelResponse>("Models get okey", data);
+  }
+
   @GetMapping()
   public DataResult<List<GetAllModelsResponse>> getAll() {
     List<GetAllModelsResponse> data = this.modelService.getAll();
-    return new SuccessDataResult<>("Models get okey", data);
+    return new SuccessDataResult<List<GetAllModelsResponse>>("Models get okey", data);
   }
 
   @PostMapping()

@@ -6,5 +6,5 @@ import hako.rentACar.entities.concretes.Model;
 
 
 public interface ModelRepository extends JpaRepository<Model, Integer>{
-
+  boolean existsByName(String name);
 }

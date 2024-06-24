@@ -17,10 +17,13 @@ import hako.rentACar.core.utilities.results.DataResult;
 import hako.rentACar.core.utilities.results.Result;
 import hako.rentACar.core.utilities.results.SuccessDataResult;
 import hako.rentACar.core.utilities.results.SuccessResult;
+import hako.rentACar.core.utilities.results.exceptions.BusinessException;
 import hako.rentACar.dto.brand.requests.CreateBrandRequest;
 import hako.rentACar.dto.brand.requests.UpdateBrandRequest;
+import hako.rentACar.dto.brand.responses.GetAllBrandWithModelsResponse;
 import hako.rentACar.dto.brand.responses.GetAllBrandsResponse;
 import hako.rentACar.dto.brand.responses.GetByIdBrandResponse;
+import hako.rentACar.entities.concretes.Brand;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,9 +48,16 @@ public class BrandsController {
   }
 
   @GetMapping("/{id}")
-  public DataResult<GetByIdBrandResponse> getMethodName(@RequestParam int id) {
+  public DataResult<GetByIdBrandResponse> getMethodName(@RequestParam int id) throws BusinessException {
     GetByIdBrandResponse data = this.brandService.getByIdBrand(id);
     SuccessDataResult<GetByIdBrandResponse> result = new SuccessDataResult<>("Brand get okey", data);
+    return result;
+  }
+
+  @GetMapping("/models/{id}")
+  public SuccessDataResult<GetAllBrandWithModelsResponse> getBrandWithModel(@RequestParam int id) throws BusinessException {
+    GetAllBrandWithModelsResponse data = this.brandService.getBrandByIdWithModels(id);
+    SuccessDataResult<GetAllBrandWithModelsResponse> result = new SuccessDataResult<>("Brand with models get okey", data);
     return result;
   }
 

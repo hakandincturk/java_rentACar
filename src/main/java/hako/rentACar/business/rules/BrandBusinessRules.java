@@ -19,4 +19,10 @@ public class BrandBusinessRules {
       throw new BusinessException("Brand name already exists.");
     }
   }
+
+  public void checkIfBrandExists(int brandId) {
+    if (this.brandRepository.findById(brandId).isEmpty()) {
+      throw new BusinessException("Brand not found");
+    }
+  }
 }

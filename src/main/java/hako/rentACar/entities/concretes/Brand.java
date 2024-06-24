@@ -27,5 +27,6 @@ public class Brand {
   private String name;
 
   @OneToMany(mappedBy = "brand")
-  List<Model> models;  
+  @OrderBy("name ASC") // sorulacak
+  List<Model> models;
 }

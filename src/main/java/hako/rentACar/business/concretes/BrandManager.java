@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import hako.rentACar.business.abstracts.BrandService;
 import hako.rentACar.business.rules.BrandBusinessRules;
 import hako.rentACar.core.utilities.mappers.ModelMapperService;
+import hako.rentACar.core.utilities.results.exceptions.BusinessException;
 import hako.rentACar.dataAccess.abstracts.BrandRepository;
 import hako.rentACar.dto.brand.requests.CreateBrandRequest;
 import hako.rentACar.dto.brand.requests.UpdateBrandRequest;
 import hako.rentACar.dto.brand.responses.GetAllBrandsResponse;
+import hako.rentACar.dto.brand.responses.GetAllBrandWithModelsResponse;
 import hako.rentACar.dto.brand.responses.GetByIdBrandResponse;
 import hako.rentACar.entities.concretes.Brand;
 
@@ -29,7 +31,6 @@ public class BrandManager implements BrandService {
 
   @Override
   public List<GetAllBrandsResponse> getAll() {
-
     List<Brand> brands = brandRepository.findAll();
     List<GetAllBrandsResponse> brandsResponse = brands.stream().map(
       brand -> this.modelMapperService.forResponse().map(brand, GetAllBrandsResponse.class)
@@ -41,29 +42,38 @@ public class BrandManager implements BrandService {
   @Override
   public void add(CreateBrandRequest createBrandRequest) {
     this.brandBusinessRules.checkIfBrandNameExists(createBrandRequest.getName());
-
+    
     Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
     brandRepository.save(brand);
   }
-
+  
   @Override
   public GetByIdBrandResponse getByIdBrand(int id) {
+    this.brandBusinessRules.checkIfBrandExists(id);
     Brand brand = brandRepository.findById(id).orElse(null);
     GetByIdBrandResponse brandResponse = this.modelMapperService.forResponse().map(brand, GetByIdBrandResponse.class);
     return brandResponse;
   }
-
+  
   @Override
   public void update(UpdateBrandRequest request) {
     Brand brand = this.modelMapperService.forRequest().map(request, Brand.class);
     this.brandRepository.save(brand);
     return;
   }
-
+  
   @Override
   public void delete(int id) {
     this.brandRepository.deleteById(id);
     return;
+  }
+  
+  @Override
+  public GetAllBrandWithModelsResponse getBrandByIdWithModels(int id) throws BusinessException {
+    this.brandBusinessRules.checkIfBrandExists(id);
+    Brand brand = this.brandRepository.findById(id).orElse(null);
+    GetAllBrandWithModelsResponse response = this.modelMapperService.forResponse().map(brand, GetAllBrandWithModelsResponse.class);
+    return response;
   }
   
 }
