@@ -13,13 +13,16 @@ import hako.rentACar.core.utilities.results.Result;
 import hako.rentACar.core.utilities.results.SuccessDataResult;
 import hako.rentACar.core.utilities.results.SuccessResult;
 import hako.rentACar.dto.model.requests.CreateModelRequest;
+import hako.rentACar.dto.model.requests.UpdateModelRequest;
 import hako.rentACar.dto.model.responses.GetAllModelsResponse;
 import hako.rentACar.dto.model.responses.GetModelResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -49,6 +52,20 @@ public class ModelsController {
   public Result add(@RequestBody @Valid CreateModelRequest createModelRequest) {
     this.modelService.add(createModelRequest);
     return new SuccessResult("Model added");
+  }
+
+  @PutMapping("/{modelId}")
+  @ResponseStatus(code = HttpStatus.OK)
+  public Result update(@RequestParam int modelId, @RequestBody @Valid UpdateModelRequest updateModelRequest) {
+    this.modelService.update(modelId, updateModelRequest);
+    return new SuccessResult("Model updated");
+  }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(code = HttpStatus.OK)
+  public Result delete(@RequestParam int id) {
+    this.modelService.delete(id);
+    return new SuccessResult("Model deleted");
   }
   
 }

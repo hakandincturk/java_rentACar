@@ -26,7 +26,7 @@ public class Brand {
   @Column(name = "name")
   private String name;
 
-  @OneToMany(mappedBy = "brand")
+  @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
   @OrderBy("name ASC") // sorulacak
   List<Model> models;
 }

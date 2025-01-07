@@ -19,8 +19,8 @@ public class ModelBusinessRules {
     }
   }
 
-  public void checkIfModelExists(int brandId) {
-    if (this.modelRepository.findById(brandId).isEmpty()) {
+  public void checkIfModelExists(int modelId) {
+    if (this.modelRepository.findById(modelId).isEmpty()) {
       throw new BusinessException("Model not found");
     }
   }

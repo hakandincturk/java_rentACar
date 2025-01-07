@@ -10,4 +10,5 @@ import lombok.AllArgsConstructor;
 public class UpdateBrandRequest {
   private int id;
   private String name;
+  private int brandId;
 }

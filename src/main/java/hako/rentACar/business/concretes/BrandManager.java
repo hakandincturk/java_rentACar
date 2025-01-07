@@ -23,7 +23,7 @@ public class BrandManager implements BrandService {
   private ModelMapperService modelMapperService;
   private BrandBusinessRules brandBusinessRules;
 
-  public BrandManager(BrandRepository brandRepository, ModelMapperService modelMapperService,BrandBusinessRules brandBusinessRules) {
+  public BrandManager(BrandRepository brandRepository, ModelMapperService modelMapperService, BrandBusinessRules brandBusinessRules) {
     this.brandRepository = brandRepository;
     this.modelMapperService = modelMapperService;
     this.brandBusinessRules = brandBusinessRules;
@@ -71,7 +71,9 @@ public class BrandManager implements BrandService {
   @Override
   public GetAllBrandWithModelsResponse getBrandByIdWithModels(int id) throws BusinessException {
     this.brandBusinessRules.checkIfBrandExists(id);
-    Brand brand = this.brandRepository.findById(id).orElse(null);
+    // Brand brand = this.brandRepository.findById(id).orElse(null);
+    Brand brand = this.brandRepository.findByIdAndModelsNotRemoved(id);
+    System.out.println("brand -->" + brand);
     GetAllBrandWithModelsResponse response = this.modelMapperService.forResponse().map(brand, GetAllBrandWithModelsResponse.class);
     return response;
   }

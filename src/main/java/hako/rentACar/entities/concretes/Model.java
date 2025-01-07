@@ -36,6 +36,9 @@ public class Model {
   @Column(name = "name")
   private String name;
 
+  @Column(name = "is_removed", nullable = false)
+  private boolean isRemoved = false;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "brand_id")
   @JsonIgnore

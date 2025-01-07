@@ -40,4 +40,7 @@ public class Car {
   @ManyToOne
   @JoinColumn(name = "model_id")
   private Model model;
+
+  @Column(name = "km")
+  private int km;
 }

@@ -7,7 +7,6 @@ import hako.rentACar.dto.brand.requests.UpdateBrandRequest;
 import hako.rentACar.dto.brand.responses.GetAllBrandWithModelsResponse;
 import hako.rentACar.dto.brand.responses.GetAllBrandsResponse;
 import hako.rentACar.dto.brand.responses.GetByIdBrandResponse;
-import hako.rentACar.entities.concretes.Brand;
 
 public interface BrandService {
   List<GetAllBrandsResponse> getAll();
