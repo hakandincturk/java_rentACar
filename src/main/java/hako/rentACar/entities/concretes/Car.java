@@ -32,10 +32,10 @@ public class Car {
   private double dailyPrice;
 
   @Column(name = "model_year")
-  private int model_year;
+  private int modelYear;
 
   @Column(name = "State")
-  private int state; // 1 -> Availavle, 2 -> Rented, 3 -> Maintanence
+  private int state; // 1 -> Available, 2 -> Rented, 3 -> Maintanence
 
   @ManyToOne
   @JoinColumn(name = "model_id")
@@ -43,4 +43,8 @@ public class Car {
 
   @Column(name = "km")
   private int km;
+
+  @ManyToOne
+  @JoinColumn(name = "location_id")
+  private Location location;
 }

@@ -20,7 +20,7 @@ public class ModelBusinessRules {
   }
 
   public void checkIfModelExists(int modelId) {
-    if (this.modelRepository.findById(modelId).isEmpty()) {
+    if (this.modelRepository.findById(modelId).isEmpty() || this.modelRepository.findById(modelId).orElse(null).isRemoved()) {
       throw new BusinessException("Model not found");
     }
   }
