@@ -6,28 +6,50 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import hako.rentACar.business.abstracts.CarService;
+import hako.rentACar.business.rules.CarBusinessRules;
+import hako.rentACar.business.rules.LocationBusinessRules;
 import hako.rentACar.business.rules.ModelBusinessRules;
 import hako.rentACar.core.utilities.mappers.ModelMapperService;
 import hako.rentACar.dataAccess.abstracts.CarRepository;
+import hako.rentACar.dataAccess.abstracts.LocationRepository;
 import hako.rentACar.dataAccess.abstracts.ModelRepository;
 import hako.rentACar.dto.car.requests.CreateCarRequest;
+import hako.rentACar.dto.car.requests.UpdateCarRequest;
 import hako.rentACar.dto.car.responses.GetAllCarsResponse;
 import hako.rentACar.entities.concretes.Car;
+import hako.rentACar.entities.concretes.Location;
 import hako.rentACar.entities.concretes.Model;
 
 @Service
 public class CarManager implements CarService {
 
   private CarRepository carRepository;
+  private CarBusinessRules carBusinessRules;
+
   private ModelBusinessRules modelBusinessRules;
   private ModelMapperService modelMapper;
+
   private ModelRepository modelRepository;
 
-  public CarManager(CarRepository carRepository, ModelMapperService modelMapper, ModelBusinessRules modelBusinessRules, ModelRepository modelRepository) {
+  private LocationBusinessRules locationBusinessRules;
+  private LocationRepository locationRepository;
+
+  public CarManager(
+    CarRepository carRepository,
+    CarBusinessRules carBusinessRules,
+    ModelMapperService modelMapper,
+    ModelBusinessRules modelBusinessRules,
+    ModelRepository modelRepository,
+    LocationBusinessRules locationBusinessRules,
+    LocationRepository locationRepository
+    ) {
     this.carRepository = carRepository;
+    this.carBusinessRules = carBusinessRules;
     this.modelMapper = modelMapper;
     this.modelBusinessRules = modelBusinessRules;
     this.modelRepository = modelRepository;
+    this.locationBusinessRules = locationBusinessRules;
+    this.locationRepository = locationRepository;
   }
 
 
@@ -47,6 +69,9 @@ public class CarManager implements CarService {
     this.modelBusinessRules.checkIfModelExists(request.getModelId());
     Model model = this.modelRepository.findById(request.getModelId()).orElse(null);
 
+    this.locationBusinessRules.checkIfLocationExists(request.getLocationId());
+    Location location = this.locationRepository.findById(request.getLocationId()).orElse(null);
+
     Car car = new Car();
     car.setModel(model);
     car.setModelYear(request.getModelYear());
@@ -54,6 +79,31 @@ public class CarManager implements CarService {
     car.setPlate(request.getPlate());
     car.setState(0); // TODO ENUM
     car.setKm(request.getKm());
+    car.setLocation(location);
+    this.carRepository.save(car);
+  }
+
+
+  @Override
+  public void update(int carId, UpdateCarRequest request) {
+
+    this.carBusinessRules.checkIfCarExists(carId);
+    Car car = this.carRepository.findById(carId).orElse(null);
+
+    this.modelBusinessRules.checkIfModelExists(request.getModelId());
+    Model model = this.modelRepository.findById(request.getModelId()).orElse(null);
+
+    this.locationBusinessRules.checkIfLocationExists(request.getLocationId());
+    Location location = this.locationRepository.findById(request.getLocationId()).orElse(null);
+
+    car.setModel(model);
+    car.setModelYear(request.getModelYear());
+    car.setDailyPrice(request.getDailyPrice());
+    car.setPlate(request.getPlate());
+    car.setState(0); // TODO ENUM
+    car.setKm(request.getKm());
+    car.setLocation(location);
+
     this.carRepository.save(car);
   }
 

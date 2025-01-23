@@ -1,4 +1,4 @@
-package hako.rentACar.dto.car.responses;
+package hako.rentACar.dto.car.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,12 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetAllCarsResponse {
-  private int id;
+public class UpdateCarRequest {
   private String plate;
-  private String modelName;
-  private String state;
+  private int modelId;
   private int km;
+  private int modelYear;
   private double dailyPrice;
-  private String locationName;
+  private int locationId;
 }

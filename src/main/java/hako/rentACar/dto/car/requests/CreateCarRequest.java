@@ -13,4 +13,5 @@ public class CreateCarRequest {
   private int km;
   private int modelYear;
   private double dailyPrice;
+  private int locationId;
 }
